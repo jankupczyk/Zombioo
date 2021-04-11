@@ -43,9 +43,9 @@ grenade_thrown = False
 
 
 # IMAGES
-start_img = pygame.image.load('img/start_btn.png').convert_alpha()
-exit_img = pygame.image.load('img/exit_btn.png').convert_alpha()
-restart_img = pygame.image.load('img/restart_btn.png').convert_alpha()
+start_img = pygame.image.load('img/btn/start_btn.png').convert_alpha()
+exit_img = pygame.image.load('img/btn/exit_btn.png').convert_alpha()
+restart_img = pygame.image.load('img/btn/restart_btn.png').convert_alpha()
 menubg = pygame.image.load('img/background/menuzombioo.png').convert_alpha()
 
 #KEYBOARD
@@ -67,6 +67,8 @@ pine2_img = pygame.image.load(
     'img/background/2_background_NEST/2_game_background.png').convert_alpha()
 mountain_img = pygame.image.load('img/background/2_background_NEST/2_game_background.png').convert_alpha()
 sky_img = pygame.image.load('img/Background/sky_cloud.png').convert_alpha()
+headhp = pygame.image.load('img/player/headHP.png').convert_alpha()
+headdeadhp = pygame.image.load('img/player/headdeadHP.png').convert_alpha()
 # TILES ETC
 img_list = []
 for x in range(TILE_TYPES):
@@ -137,6 +139,8 @@ GAMEOVER.set_volume(2)
 # FONT
 font = pygame.font.Font("font/Futurot.ttf", 20)
 zombiootitle = pygame.font.Font("font/Futurot.ttf", 90)
+BTNtext = pygame.font.Font("font/Futurot.ttf", 50)
+YOUDIED = pygame.font.Font("font/Futurot.ttf", 110)
 JanKupczyk = pygame.font.Font("font/Futurot.ttf", 13)
 
 def draw_text(text, font, text_col, x, y):
@@ -188,7 +192,7 @@ class Soldier(pygame.sprite.Sprite):
         self.start_ammo = ammo
         self.shoot_cooldown = 0
         self.grenades = grenades
-        self.health = 100
+        self.health = 120
         self.max_health = self.health
         self.direction = 1
         self.vel_y = 0
@@ -306,7 +310,7 @@ class Soldier(pygame.sprite.Sprite):
     def shoot(self):
         if self.shoot_cooldown == 0 and self.ammo > 0:
             self.shoot_cooldown = 15
-            bullet = Bullet(self.rect.centerx + (0.75 *
+            bullet = Bullet(self.rect.centerx + (0.80 *
                                                  self.rect.size[0] * self.direction), self.rect.centery, self.direction)
             bullet_group.add(bullet)
             SHOOT_SOUND.play()
@@ -487,10 +491,10 @@ class ItemBox(pygame.sprite.Sprite):
                 if player.health > player.max_health:
                     player.health = player.max_health
             elif self.item_type == 'Ammo':
-                player.ammo += 15
+                player.ammo += 20
                 RELOAD.play()
             elif self.item_type == 'Grenade':
-                player.grenades += 3
+                player.grenades += 1
                 PICK.play()
             self.kill()
 
@@ -508,6 +512,7 @@ class HealthBar():
         pygame.draw.rect(screen, BLACK, (self.x - 2, self.y - 2, 154, 24))
         pygame.draw.rect(screen, RED, (self.x, self.y, 150, 20))
         pygame.draw.rect(screen, GREEN, (self.x, self.y, 150 * ratio, 20))
+        screen.blit(headhp, (-4, 2))
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -576,19 +581,19 @@ class Grenade(pygame.sprite.Sprite):
         self.rect.y += dy
 
         # CD TIMER
-        self.timer -= 1
+        self.timer -= 0.95
         if self.timer <= 0:
             self.kill()
-            explosion = Explosion(self.rect.x, self.rect.y, 0.5)
+            explosion = Explosion(self.rect.x, self.rect.y, 1.5)
             explosion_group.add(explosion)
             #DAMAGE
             if abs(self.rect.centerx - player.rect.centerx) < TILE_SIZE * 2 and \
                     abs(self.rect.centery - player.rect.centery) < TILE_SIZE * 2:
                 player.health -= 50
             for enemy in enemy_group:
-                if abs(self.rect.centerx - enemy.rect.centerx) < TILE_SIZE * 2 and \
-                        abs(self.rect.centery - enemy.rect.centery) < TILE_SIZE * 2:
-                    enemy.health -= 50
+                if abs(self.rect.centerx - enemy.rect.centerx) < TILE_SIZE * 3 and \
+                        abs(self.rect.centery - enemy.rect.centery) < TILE_SIZE * 3:
+                    enemy.health -= 100
                     GRUNTING.play()
 
 
@@ -611,7 +616,7 @@ class Explosion(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += screen_scroll
 
-        EXPLOSION_SPEED = 5
+        EXPLOSION_SPEED = 7
         self.counter += 1
 
         if self.counter >= EXPLOSION_SPEED:
@@ -685,7 +690,7 @@ while run:
         screen.blit(Fkey, (5, 730))
         draw_text('EXIT', font, WHITE, 55, 825)
         screen.blit(ESCkey, (5, 810))
-        draw_text('Jan Kupczyk', JanKupczyk, WHITE, 936, 845)
+        draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
         # BTNS MENU
         if start_button.draw(screen):
             start_game = True
@@ -698,6 +703,7 @@ while run:
         draw_bg()
         world.draw()
         health_bar.draw(player.health)
+        draw_text('HEALTH', font, WHITE, 46, 12)
         draw_text('AMMO: ', font, WHITE, 10, 35)
         for x in range(player.ammo):
             screen.blit(bullet_img, (90 + (x * 10), 40))
@@ -764,11 +770,14 @@ while run:
                     player, health_bar = world.process_data(world_data)
         else:
             screen_scroll = 0
+            GAMEOVER.play()
+            draw_text('YOU DIED!', YOUDIED, WHITE, 260, 150), GAMEOVER.stop()
+            screen.blit(headdeadhp, (-4, 2))
             if restart_button.draw(screen):
                 MENUSELECT.play()
                 bg_scroll = 0
                 world_data = reset_level()
-                # load in level data and create world
+                #CREATE WORLD DATA
                 with open(f'level{level}_data.csv', newline='') as csvfile:
                     reader = csv.reader(csvfile, delimiter=',')
                     for x, row in enumerate(reader):
@@ -780,6 +789,7 @@ while run:
     for event in pygame.event.get():
         # QUIT GAME
         if event.type == pygame.QUIT:
+            MENUSELECT.play()
             run = False
         # KEYBOARD SETT
         if event.type == pygame.KEYDOWN:
@@ -813,6 +823,7 @@ while run:
             if event.key == pygame.K_q:
                 grenade = False
                 grenade_thrown = False
+
 
     pygame.display.update()
 
