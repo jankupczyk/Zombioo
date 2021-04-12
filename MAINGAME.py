@@ -3,9 +3,9 @@ import os
 import random
 import csv
 import button
+import pyautogui
 
 pygame.init()
-
 
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
@@ -39,6 +39,8 @@ moving_right = False
 shoot = False
 grenade = False
 grenade_thrown = False
+molotov = False
+molotov_thrown = False
 
 
 
@@ -58,6 +60,7 @@ SPkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/Spacelarge_
 Mkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/M_Key_Light.png').convert_alpha()
 Ukey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/U_Key_Light.png').convert_alpha()
 Fkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/F_Key_Light.png').convert_alpha()
+F5key = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/F5_Key_Light.png').convert_alpha()
 
 
 # BACKGROUND IMAGES
@@ -80,19 +83,20 @@ bullet_img = pygame.image.load('img/icons/ammo.png').convert_alpha()
 bullet_zombie = pygame.image.load('img/icons/bulletzombie.png').convert_alpha
 
 grenade_img = pygame.image.load('img/icons/grenade.png').convert_alpha()
+molotov_img = pygame.image.load('img/icons/molotov.png').convert_alpha() 
 
 health_box_img = pygame.image.load('img/icons/health_box.png').convert_alpha()
 ammo_box_img = pygame.image.load('img/icons/ammo_box.png').convert_alpha()
-grenade_box_img = pygame.image.load(
-    'img/icons/grenade_box.png').convert_alpha()
+grenade_box_img = pygame.image.load('img/icons/grenade_box.png').convert_alpha()
+molotov_box_img = pygame.image.load('img/icons/molotov_box.png').convert_alpha()
 item_boxes = {
     'Health'	: health_box_img,
     'Ammo'		: ammo_box_img,
-    'Grenade'	: grenade_box_img
+    'Grenade'	: grenade_box_img,
 }
 
 # COLORS
-BG = (144, 201, 120)
+BG = (81, 6, 13)
 RED = (176, 8, 12)
 WHITE = (255, 255, 255)
 GREEN = (26, 110, 15)
@@ -109,6 +113,9 @@ RELOAD.set_volume(1)
 
 GRENADESOUND = pygame.mixer.Sound('audio/grenade.mp3')
 GRENADESOUND.set_volume(1)
+
+MOLOTOVSOUND = pygame.mixer.Sound('audio/molotov.wav')
+MOLOTOVSOUND.set_volume(1)
 
 PICK = pygame.mixer.Sound('audio/grenadepick.mp3')
 PICK.set_volume(2)
@@ -134,7 +141,8 @@ JUMP.set_volume(2)
 GAMEOVER = pygame.mixer.Sound('audio/gameover.wav')
 GAMEOVER.set_volume(2)
 
-
+SCREENSHOT = pygame.mixer.Sound('audio/takingphoto.wav')
+GAMEOVER.set_volume(5)
 
 # FONT
 font = pygame.font.Font("font/Futurot.ttf", 20)
@@ -142,6 +150,9 @@ zombiootitle = pygame.font.Font("font/Futurot.ttf", 90)
 BTNtext = pygame.font.Font("font/Futurot.ttf", 50)
 YOUDIED = pygame.font.Font("font/Futurot.ttf", 110)
 JanKupczyk = pygame.font.Font("font/Futurot.ttf", 13)
+
+pausetimerevent = pygame.USEREVENT + 1
+paused = False
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -198,7 +209,7 @@ class Soldier(pygame.sprite.Sprite):
         self.vel_y = 0
         self.jump = False
         self.in_air = True
-        self.flip = False
+        self.flip = True
         self.animation_list = []
         self.frame_index = 0
         self.action = 0
@@ -310,7 +321,7 @@ class Soldier(pygame.sprite.Sprite):
     def shoot(self):
         if self.shoot_cooldown == 0 and self.ammo > 0:
             self.shoot_cooldown = 15
-            bullet = Bullet(self.rect.centerx + (0.80 *
+            bullet = Bullet(self.rect.centerx + (0.60 *
                                                  self.rect.size[0] * self.direction), self.rect.centery, self.direction)
             bullet_group.add(bullet)
             SHOOT_SOUND.play()
@@ -416,7 +427,7 @@ class World():
                     elif tile == 17:  # create ammo box
                         item_box = ItemBox(
                             'Ammo', x * TILE_SIZE, y * TILE_SIZE)
-                        item_box_group.add(item_box)
+                        item_box_group.add(item_box) 
                     elif tile == 18:  # create grenade box
                         item_box = ItemBox(
                             'Grenade', x * TILE_SIZE, y * TILE_SIZE)
@@ -513,12 +524,13 @@ class HealthBar():
         pygame.draw.rect(screen, RED, (self.x, self.y, 150, 20))
         pygame.draw.rect(screen, GREEN, (self.x, self.y, 150 * ratio, 20))
         screen.blit(headhp, (-4, 2))
-
+        screen.blit(update_fps(), (1050,5))
+        draw_text('FPS', font, WHITE, 1010, 5)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.speed = 10
+        self.speed = 11
         self.image = bullet_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -542,7 +554,11 @@ class Bullet(pygame.sprite.Sprite):
                     enemy.health -= 25
                     ZOMBIEATTACK.play()
                     self.kill()
-
+                    
+def update_fps():
+	fps = str(int(clock.get_fps()))
+	fps_text = font.render(fps, 1, pygame.Color("white"))
+	return fps_text
 
 class Grenade(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -627,6 +643,11 @@ class Explosion(pygame.sprite.Sprite):
             else:
                 self.image = self.images[self.frame_index]
 
+#TAKING SCREENSHOT
+def screenshot(obj, file_name, position, size):
+    img = pygame.Surface(size)
+    img.blit(obj, (0, 0), (position, size))
+    pygame.image.save(img,  "screenshots/ss_.png")
 
 #BTNs
 start_button = button.Button(
@@ -680,14 +701,16 @@ while run:
         screen.blit(Akey, (100, 450))
         draw_text('SHOOT', font, WHITE, 210, 512)
         screen.blit(SPkey, (125, 480))
-        draw_text('NADE', font, WHITE, 55, 626)
-        screen.blit(Qkey, (5, 610))
-        draw_text('MUTE MUSIC', font, WHITE, 55, 666)
-        screen.blit(Mkey, (5, 650))
-        draw_text('UNMUTE MUSIC', font, WHITE, 55, 706)
-        screen.blit(Ukey, (5, 690))
-        draw_text('FULLSCREEN', font, WHITE, 55, 746)
-        screen.blit(Fkey, (5, 730))
+        draw_text('NADE', font, WHITE, 55, 586)
+        screen.blit(Qkey, (5, 570))
+        draw_text('MUTE MUSIC', font, WHITE, 55, 626)
+        screen.blit(Mkey, (5, 610))
+        draw_text('UNMUTE MUSIC', font, WHITE, 55, 666)
+        screen.blit(Ukey, (5, 650))
+        draw_text('FULLSCREEN', font, WHITE, 55, 706)
+        screen.blit(Fkey, (5, 690))
+        draw_text('TAKE SCREENSHOT', font, WHITE, 55, 746)
+        screen.blit(F5key, (5, 730))
         draw_text('EXIT', font, WHITE, 55, 825)
         screen.blit(ESCkey, (5, 810))
         draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
@@ -710,6 +733,9 @@ while run:
         draw_text('GRENADES: ', font, WHITE, 10, 60)
         for x in range(player.grenades):
             screen.blit(grenade_img, (135 + (x * 15), 60))
+        draw_text('MOLOTOVS: ', font, WHITE, 10, 85)
+        for x in range(player.grenades):
+            screen.blit(molotov_img, (140 + (x * 15), 90))
 
         player.update()
         player.draw()
@@ -805,12 +831,22 @@ while run:
                 player.jump = True
             if event.key == pygame.K_ESCAPE:
                 run = False
+                MENUSELECT.play()
             if event.key == pygame.K_m:
                 pygame.mixer.music.pause()
+                MENUSELECT.play()
             if event.key == pygame.K_u:
                 pygame.mixer.music.unpause()
+                MENUSELECT.play()
             if event.key == pygame.K_f:
-                pygame.display.toggle_fullscreen()
+                pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+                MENUSELECT.play()
+            if event.key == pygame.K_F5:
+                screenshottaken = draw_text('Screenshot taken!', font, WHITE, 0, 840,)
+                MENUSELECT.play()
+                SCREENSHOT.play()
+                screenshot(screen, "screenshots/screenshot.png", (20, 100), (1080, 864))
+                print("Screenshot taken")
 
         # KEYBOARDS SETT2
         if event.type == pygame.KEYUP:
