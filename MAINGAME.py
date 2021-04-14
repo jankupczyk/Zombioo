@@ -25,7 +25,7 @@ SCROLL_THRESH = 200
 ROWS = 16
 COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 21
+TILE_TYPES = 22
 MAX_LEVELS = 6
 screen_scroll = 0
 bg_scroll = 0
@@ -93,6 +93,7 @@ item_boxes = {
     'Health'	: health_box_img,
     'Ammo'		: ammo_box_img,
     'Grenade'	: grenade_box_img,
+    'Molotov'   :molotov_box_img
 }
 
 # COLORS
@@ -116,6 +117,9 @@ GRENADESOUND.set_volume(1)
 
 MOLOTOVSOUND = pygame.mixer.Sound('audio/molotov.wav')
 MOLOTOVSOUND.set_volume(1)
+
+MOLOTOVBR = pygame.mixer.Sound('audio/molotovbr.wav')
+MOLOTOVBR.set_volume(3)
 
 PICK = pygame.mixer.Sound('audio/grenadepick.mp3')
 PICK.set_volume(2)
@@ -178,7 +182,9 @@ def reset_level():
     bullet_group.empty()
     zombiebullet_group.empty()
     grenade_group.empty()
+    molotov_group.empty()
     explosion_group.empty()
+    moloexplosion_group.empty()
     item_box_group.empty()
     decoration_group.empty()
     water_group.empty()
@@ -194,7 +200,7 @@ def reset_level():
 
 
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, char_type, x, y, scale, speed, ammo, grenades):
+    def __init__(self, char_type, x, y, scale, speed, ammo, grenades, molotovs):
         pygame.sprite.Sprite.__init__(self)
         self.alive = True
         self.char_type = char_type
@@ -203,7 +209,8 @@ class Soldier(pygame.sprite.Sprite):
         self.start_ammo = ammo
         self.shoot_cooldown = 0
         self.grenades = grenades
-        self.health = 120
+        self.molotovs = molotovs
+        self.health = 125
         self.max_health = self.health
         self.direction = 1
         self.vel_y = 0
@@ -220,7 +227,7 @@ class Soldier(pygame.sprite.Sprite):
         self.idling = False
         self.idling_counter = 0
 
-        # IRJD
+        # IDLE RUN JUMP DEATH FLIP
         animation_types = ['Idle', 'Run', 'Jump', 'Death']
         for animation in animation_types:
             # LIST
@@ -417,12 +424,12 @@ class World():
                         decoration_group.add(decoration)
                     elif tile == 15:  # create player
                         player = Soldier('player', x * TILE_SIZE,
-                                         y * TILE_SIZE, 1.65, 5, 20, 5)
+                                         y * TILE_SIZE, 1.65, 5, 20, 5, 5)
                         health_bar = HealthBar(
                             10, 10, player.health, player.health)
                     elif tile == 16:  # create enemies
                         enemy = Soldier('enemy', x * TILE_SIZE,
-                                        y * TILE_SIZE, 1.65, 2, 20, 0)
+                                        y * TILE_SIZE, 1.65, 2, 20, 0, 0)
                         enemy_group.add(enemy)
                     elif tile == 17:  # create ammo box
                         item_box = ItemBox(
@@ -507,6 +514,9 @@ class ItemBox(pygame.sprite.Sprite):
             elif self.item_type == 'Grenade':
                 player.grenades += 1
                 PICK.play()
+            elif self.item_type == 'Molotov':
+                player.molotovs += 1
+                PICK.play()
             self.kill()
 
 
@@ -565,7 +575,7 @@ class Grenade(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.timer = 100
         self.vel_y = -11
-        self.speed = 7
+        self.speed = 6
         self.image = grenade_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -587,7 +597,7 @@ class Grenade(pygame.sprite.Sprite):
                 if self.vel_y < 0:
                     self.vel_y = 0
                     dy = tile[1].bottom - self.rect.top
-                # check if above the ground, i.e. falling
+                # Check height
                 elif self.vel_y >= 0:
                     self.vel_y = 0
                     dy = tile[1].top - self.rect.bottom
@@ -596,7 +606,7 @@ class Grenade(pygame.sprite.Sprite):
         self.rect.x += dx + screen_scroll
         self.rect.y += dy
 
-        # CD TIMER
+        # CD GRENADE TIMER
         self.timer -= 0.95
         if self.timer <= 0:
             self.kill()
@@ -612,6 +622,90 @@ class Grenade(pygame.sprite.Sprite):
                     enemy.health -= 100
                     GRUNTING.play()
 
+class Molotov(pygame.sprite.Sprite):
+    def __init__(self, x, y, direction):
+        pygame.sprite.Sprite.__init__(self)
+        self.timer = 99
+        self.vel_y = -10
+        self.speed = 11
+        self.image = molotov_img
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+        self.direction = direction
+
+    def update(self):
+        self.vel_y += GRAVITY
+        dx = self.direction * self.speed
+        dy = self.vel_y
+
+        for tile in world.obstacle_list:
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                self.direction *= -1
+                dx = self.direction * self.speed
+            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                self.speed = 0
+                if self.vel_y < 0:
+                    self.vel_y = 0
+                    dy = tile[1].bottom - self.rect.top
+                # Check height
+                elif self.vel_y >= 0:
+                    self.vel_y = 0
+                    dy = tile[1].top - self.rect.bottom
+
+        # MOLOTOV POS
+        self.rect.x += dx + screen_scroll
+        self.rect.y += dy
+
+        # CD MOLOTOV TIMER
+        self.timer -= 2
+        if self.timer <= 0:
+            self.kill()
+            moloexplosion = MoloExplosion(self.rect.x, self.rect.y, 1.5)
+            moloexplosion_group.add(moloexplosion)
+            #DAMAGE
+            if abs(self.rect.centerx - player.rect.centerx) < TILE_SIZE * 2 and \
+                    abs(self.rect.centery - player.rect.centery) < TILE_SIZE * 2:
+                player.health -= 25
+            for enemy in enemy_group:
+                if abs(self.rect.centerx - enemy.rect.centerx) < TILE_SIZE * 4 and \
+                        abs(self.rect.centery - enemy.rect.centery) < TILE_SIZE * 4:
+                    enemy.health -= 55
+                    GRUNTING.play()
+                    GRUNTING.play()
+                    GRUNTING.play()
+
+class MoloExplosion(pygame.sprite.Sprite):
+    def __init__(self, x, y, scale):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        MOLOTOVBR.play()
+        for num in range(0, 4):
+            img = pygame.image.load(
+                f'img/moloexplosion/Molo_{num}.png').convert_alpha()
+            img = pygame.transform.scale(
+                img, (int(img.get_width() * scale), int(img.get_height() * scale)))
+            self.images.append(img), MOLOTOVSOUND.play()
+        self.frame_index = 0
+        self.image = self.images[self.frame_index]
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+        self.counter = 0
+
+    def update(self):
+        self.rect.x += screen_scroll
+
+        MOLOEXPLOSION_SPEED = 20
+        self.counter += 1
+
+        if self.counter >= MOLOEXPLOSION_SPEED:
+            self.counter = 0
+            self.frame_index += 1
+            if self.frame_index >= len(self.images):
+                self.kill()
+            else:
+                self.image = self.images[self.frame_index] 
 
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, x, y, scale):
@@ -662,7 +756,9 @@ enemy_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 zombiebullet_group = pygame.sprite.Group()
 grenade_group = pygame.sprite.Group()
+molotov_group = pygame.sprite.Group()
 explosion_group = pygame.sprite.Group()
+moloexplosion_group = pygame.sprite.Group()
 item_box_group = pygame.sprite.Group()
 decoration_group = pygame.sprite.Group()
 water_group = pygame.sprite.Group()
@@ -732,10 +828,10 @@ while run:
             screen.blit(bullet_img, (90 + (x * 10), 40))
         draw_text('GRENADES: ', font, WHITE, 10, 60)
         for x in range(player.grenades):
-            screen.blit(grenade_img, (135 + (x * 15), 60))
+            screen.blit(grenade_img, (135 + (x * 15), 61))
         draw_text('MOLOTOVS: ', font, WHITE, 10, 85)
-        for x in range(player.grenades):
-            screen.blit(molotov_img, (140 + (x * 15), 90))
+        for x in range(player.molotovs):
+            screen.blit(molotov_img, (140 + (x * 15), 75))
 
         player.update()
         player.draw()
@@ -749,6 +845,8 @@ while run:
         bullet_group.update()
         grenade_group.update()
         explosion_group.update()
+        moloexplosion_group.update()
+        molotov_group.update()
         item_box_group.update()
         decoration_group.update()
         water_group.update()
@@ -757,6 +855,8 @@ while run:
         bullet_group.draw(screen)
         grenade_group.draw(screen)
         explosion_group.draw(screen)
+        moloexplosion_group.draw(screen)
+        molotov_group.draw(screen)
         item_box_group.draw(screen)
         decoration_group.draw(screen)
         water_group.draw(screen)
@@ -771,6 +871,12 @@ while run:
                 grenade_group.add(grenade)
                 player.grenades -= 1
                 grenade_thrown = True
+            elif molotov and molotov_thrown == False and player.molotovs > 0:
+                molotov = Molotov(player.rect.centerx + (0.5 * player.rect.size[0] * player.direction),
+                                  player.rect.top, player.direction)
+                molotov_group.add(molotov)
+                player.molotovs -= 1
+                molotov_thrown = True
             if player.in_air:
                 player.update_action(2)  # 2: jump
             elif moving_left or moving_right:
@@ -827,6 +933,8 @@ while run:
                 shoot = True
             if event.key == pygame.K_q:
                 grenade = True
+            if event.key == pygame.K_e:
+                molotov = True
             if event.key == pygame.K_w and player.alive:
                 player.jump = True
             if event.key == pygame.K_ESCAPE:
@@ -859,6 +967,9 @@ while run:
             if event.key == pygame.K_q:
                 grenade = False
                 grenade_thrown = False
+            if event.key == pygame.K_e:
+                molotov = False
+                molotov_thrown = False
 
 
     pygame.display.update()
