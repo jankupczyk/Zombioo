@@ -104,7 +104,7 @@ GREEN = (26, 110, 15)
 BLACK = (0, 0, 0)
 
 #MUSIC
-menumusic = pygame.mixer.music.load('audio/1. Winning Sight.wav')
+menumusic = pygame.mixer.music.load('audio/THEME.wav')
 pygame.mixer.music.play(0)
 SHOOT_SOUND = pygame.mixer.Sound('audio/shot.mp3')
 SHOOT_SOUND.set_volume(0.6)
@@ -509,7 +509,7 @@ class ItemBox(pygame.sprite.Sprite):
                 if player.health > player.max_health:
                     player.health = player.max_health
             elif self.item_type == 'Ammo':
-                player.ammo += 20
+                player.ammo += 10
                 RELOAD.play()
             elif self.item_type == 'Grenade':
                 player.grenades += 1
@@ -902,7 +902,6 @@ while run:
                     player, health_bar = world.process_data(world_data)
         else:
             screen_scroll = 0
-            GAMEOVER.play()
             draw_text('YOU DIED!', YOUDIED, WHITE, 260, 150), GAMEOVER.stop()
             screen.blit(headdeadhp, (-4, 2))
             if restart_button.draw(screen):
