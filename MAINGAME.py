@@ -4,6 +4,7 @@ import random
 import csv
 import button
 import pyautogui
+import webbrowser
 
 pygame.init()
 
@@ -61,7 +62,7 @@ Mkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/M_Key_Light.
 Ukey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/U_Key_Light.png').convert_alpha()
 Fkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/F_Key_Light.png').convert_alpha()
 F5key = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/F5_Key_Light.png').convert_alpha()
-
+F4key = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/F4_Key_Light.png').convert_alpha()
 
 # BACKGROUND IMAGES
 pine1_img = pygame.image.load(
@@ -788,23 +789,25 @@ while run:
         # MENU
         screen.blit(menubg, (0, 0))
         draw_text('ZOMBIOO', zombiootitle, WHITE, 308, 150)
-        draw_text('CONTROL:', font, WHITE, 115, 390)
-        draw_text('JUMP', font, WHITE, 190, 426)
-        screen.blit(Wkey, (140, 410))
-        draw_text('LEFT', font, WHITE, 55, 466)
-        screen.blit(Dkey, (180, 450))
-        draw_text('RIGHT', font, WHITE, 230, 466)
-        screen.blit(Akey, (100, 450))
-        draw_text('SHOOT', font, WHITE, 210, 512)
-        screen.blit(SPkey, (125, 480))
-        draw_text('NADE', font, WHITE, 55, 586)
-        screen.blit(Qkey, (5, 570))
-        draw_text('MUTE MUSIC', font, WHITE, 55, 626)
-        screen.blit(Mkey, (5, 610))
-        draw_text('UNMUTE MUSIC', font, WHITE, 55, 666)
-        screen.blit(Ukey, (5, 650))
-        draw_text('FULLSCREEN', font, WHITE, 55, 706)
-        screen.blit(Fkey, (5, 690))
+        draw_text('CONTROL:', font, WHITE, 115, 380)
+        draw_text('JUMP', font, WHITE, 190, 410)
+        screen.blit(Wkey, (140, 395))
+        draw_text('LEFT', font, WHITE, 55, 450)
+        screen.blit(Dkey, (180, 435))
+        draw_text('RIGHT', font, WHITE, 230, 450)
+        screen.blit(Akey, (100, 435))
+        draw_text('SHOOT', font, WHITE, 210, 490)
+        screen.blit(SPkey, (125, 460))
+        draw_text('NADE', font, WHITE, 55, 546)
+        screen.blit(Qkey, (5, 530))
+        draw_text('MUTE MUSIC', font, WHITE, 55, 586)
+        screen.blit(Mkey, (5, 570))
+        draw_text('UNMUTE MUSIC', font, WHITE, 55, 626)
+        screen.blit(Ukey, (5, 610))
+        draw_text('FULLSCREEN', font, WHITE, 55, 666)
+        screen.blit(Fkey, (5, 650))
+        draw_text('VISIT WEBSITE', font, WHITE, 55, 706)
+        screen.blit(F4key, (5, 690))
         draw_text('TAKE SCREENSHOT', font, WHITE, 55, 746)
         screen.blit(F5key, (5, 730))
         draw_text('EXIT', font, WHITE, 55, 825)
@@ -947,6 +950,9 @@ while run:
                 MENUSELECT.play()
             if event.key == pygame.K_f:
                 pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+                MENUSELECT.play()
+            if event.key == pygame.K_F4:
+                webbrowser.open('https://github.com/jankupczyk')
                 MENUSELECT.play()
             if event.key == pygame.K_F5:
                 screenshottaken = draw_text('Screenshot taken!', font, WHITE, 0, 840,)
