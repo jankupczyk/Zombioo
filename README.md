@@ -5,6 +5,6 @@ How to play:
 Run Zombioo.exe or simply open MAINGAME.py
 
 To create .exe file type in terminal:     
-_pyinstaller.exe --onefile .\MAINGAME.py_
+```pyinstaller.exe --onefile .\MAINGAME.py```
 
 ![Zombioo](demo/demoNEW.gif)
