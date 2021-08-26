@@ -150,7 +150,7 @@ SCREENSHOT = pygame.mixer.Sound('audio/takingphoto.wav')
 GAMEOVER.set_volume(5)
 
 # FONT
-font = pygame.font.Font("font/Futurot.ttf", 20)
+font = pygame.font.Font("font/Futurot.ttf", 21)
 zombiootitle = pygame.font.Font("font/Futurot.ttf", 90)
 BTNtext = pygame.font.Font("font/Futurot.ttf", 50)
 YOUDIED = pygame.font.Font("font/Futurot.ttf", 110)
@@ -211,7 +211,7 @@ class Soldier(pygame.sprite.Sprite):
         self.shoot_cooldown = 0
         self.grenades = grenades
         self.molotovs = molotovs
-        self.health = 125
+        self.health = 140
         self.max_health = self.health
         self.direction = 1
         self.vel_y = 0
@@ -328,7 +328,7 @@ class Soldier(pygame.sprite.Sprite):
 
     def shoot(self):
         if self.shoot_cooldown == 0 and self.ammo > 0:
-            self.shoot_cooldown = 15
+            self.shoot_cooldown = 20
             bullet = Bullet(self.rect.centerx + (0.60 *
                                                  self.rect.size[0] * self.direction), self.rect.centery, self.direction)
             bullet_group.add(bullet)
@@ -398,7 +398,7 @@ class Soldier(pygame.sprite.Sprite):
     def draw(self):
         screen.blit(pygame.transform.flip(
             self.image, self.flip, False), self.rect)
-
+            
 
 class World():
     def __init__(self):
@@ -435,7 +435,7 @@ class World():
                     elif tile == 17:  # create ammo box
                         item_box = ItemBox(
                             'Ammo', x * TILE_SIZE, y * TILE_SIZE)
-                        item_box_group.add(item_box) 
+                        item_box_group.add(item_box)
                     elif tile == 18:  # create grenade box
                         item_box = ItemBox(
                             'Grenade', x * TILE_SIZE, y * TILE_SIZE)
@@ -536,7 +536,9 @@ class HealthBar():
         pygame.draw.rect(screen, GREEN, (self.x, self.y, 150 * ratio, 20))
         screen.blit(headhp, (-4, 2))
         screen.blit(update_fps(), (1050,5))
-        draw_text('FPS', font, WHITE, 1010, 5)
+        draw_text('FPS', font, WHITE, 1000, 5)
+        screen.blit(update_ms(), (70, 830))
+        draw_text('TIME', font, WHITE, 5, 830)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -570,6 +572,11 @@ def update_fps():
 	fps = str(int(clock.get_fps()))
 	fps_text = font.render(fps, 1, pygame.Color("white"))
 	return fps_text
+
+def update_ms():
+    mss = str(pygame.time.get_ticks()/1000)
+    mss_text = font.render(mss, 1, pygame.Color("white"))
+    return mss_text
 
 class Grenade(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
