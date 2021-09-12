@@ -24,16 +24,16 @@ To create .exe file type in terminal:
 
 ### SYSTEM REQUIREMENTS 
 
-| System     | Requirements                                    |
-|:----------:|:-----------------------------------------------:|
-| OS         | Windows 98/ME/2000/XP/Vista/7/8/8.1/10/11       |
-| CPU        | 2,4GHz Pentium 4 / Pentium II 300  / Athlon     |
-| GPU        | 128 Мб Video card GeForce 4 / Radeon 9600       |
-| MEMORY     | 512MB RAM                                       |
-| FREE SPACE | 500MB                                           |
-| DirectX    | DirectX 9.0                                     |
+| System     | Requirements                                                       |
+|:----------:|:------------------------------------------------------------------:|
+| OS         | Windows 98 / ME / 2000 / XP / Vista / 7 / 8 / 8.1 / 10 / 11        |
+| CPU        | 2,4GHz Pentium 4 / Pentium II 300  / Athlon                        |
+| GPU        | 128 Мб Video card GeForce 4 / Radeon 9600                          |
+| MEMORY     | 512MB RAM                                                          |
+| FREE SPACE | 500MB                                                              |
+| DirectX    | DirectX 9.0 / DirectX 10.0 / DirectX 11.0 / DirectX 12.0           |
 
-Hardware: <b>keyboard, mouse, and headset with microphone</b>.
+<b>Hardware: keyboard, mouse, and headset with microphone</b>.
 <br />
 <br />
 <br />
