@@ -35,4 +35,4 @@ To create .exe file type in terminal:
 | V0.1    | :x:                | *Release of Zombioo*                     | 19/03/2021 |
 | V0.01   | :x:                | *Pre-release of Zombioo*                 | 06/03/2021 |
 
-CURRENT VERSION: <b>V 1.3</b>
+CURRENT VERSION: <b>V1.0</b>
