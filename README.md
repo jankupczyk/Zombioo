@@ -37,13 +37,13 @@ To create .exe file type in terminal:
 <br />
 
 ### SUPPORTED VERSIONS
-| Version | Supported          | Updates                                  | Date       |
-| ------- | ------------------ | ---------------------------------------- | ---------- |
-| V1.0    | :white_check_mark: | *Bug fixes*  *Molotov added*             | 22/05/2021 |
-| V0.8    | :x:                | *Bug fixes*  *Screenshot function added* | 15/04/2021 |
-| V0.2a2w | :x:                | *Hotfix*                                 | 10/04/2021 |
-| V0.2a1w | :x:                | *Hotfix*                                 | 10/04/2021 |
-| V0.1    | :x:                | *Release of Zombioo*                     | 19/03/2021 |
-| V0.01   | :x:                | *Pre-release of Zombioo*                 | 06/03/2021 |
+| Version | Supported          | Added                                      | Date       |
+| ------- | ------------------ | ------------------------------------------ | ---------- |
+| V1.0    | :white_check_mark: | *Bug fixes* + *Molotov added*              | 22/05/2021 |
+| V0.8    | :x:                | *Bug fixes* + *Screenshot function added*  | 15/04/2021 |
+| V0.2a2w | :x:                | *Hotfix*                                   | 10/04/2021 |
+| V0.2a1w | :x:                | *Hotfix*                                   | 10/04/2021 |
+| V0.1    | :x:                | *Release of Zombioo*                       | 19/03/2021 |
+| V0.01   | :x:                | *Pre-release of Zombioo*                   | 06/03/2021 |
 
 CURRENT VERSION: <b>V1.0</b>
