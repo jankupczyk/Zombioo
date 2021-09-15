@@ -5,6 +5,7 @@ import csv
 import button
 import pyautogui
 import webbrowser
+import time
 
 pygame.init()
 
@@ -18,7 +19,7 @@ pygame.mouse.set_visible(1)
 
 # FPS
 clock = pygame.time.Clock()
-FPS = 70
+FPS = 85
 
 # VAR
 GRAVITY = 0.50
@@ -510,7 +511,7 @@ class ItemBox(pygame.sprite.Sprite):
                 if player.health > player.max_health:
                     player.health = player.max_health
             elif self.item_type == 'Ammo':
-                player.ammo += 10
+                player.ammo += 5
                 RELOAD.play()
             elif self.item_type == 'Grenade':
                 player.grenades += 1
@@ -543,7 +544,7 @@ class HealthBar():
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.speed = 11
+        self.speed = 12
         self.image = bullet_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -564,7 +565,7 @@ class Bullet(pygame.sprite.Sprite):
         for enemy in enemy_group:
             if pygame.sprite.spritecollide(enemy, bullet_group, False):
                 if enemy.alive:
-                    enemy.health -= 25
+                    enemy.health -= random.randint(60,140)
                     ZOMBIEATTACK.play()
                     self.kill()
                     
@@ -627,7 +628,7 @@ class Grenade(pygame.sprite.Sprite):
             for enemy in enemy_group:
                 if abs(self.rect.centerx - enemy.rect.centerx) < TILE_SIZE * 3 and \
                         abs(self.rect.centery - enemy.rect.centery) < TILE_SIZE * 3:
-                    enemy.health -= 100
+                    enemy.health -= 1000
                     GRUNTING.play()
 
 class Molotov(pygame.sprite.Sprite):
@@ -704,7 +705,7 @@ class MoloExplosion(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += screen_scroll
 
-        MOLOEXPLOSION_SPEED = 20
+        MOLOEXPLOSION_SPEED = 23
         self.counter += 1
 
         if self.counter >= MOLOEXPLOSION_SPEED:
@@ -746,10 +747,13 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame_index]
 
 #TAKING SCREENSHOT
-def screenshot(obj, file_name, position, size):
-    img = pygame.Surface(size)
-    img.blit(obj, (0, 0), (position, size))
-    pygame.image.save(img,  "screenshots/ss_.png")
+def takescreenshot(screen):
+    time_ss = time.asctime(time.localtime(time.time()))
+    time_ss = time_ss.replace(" ", "_")
+    time_ss = time_ss.replace(":", ".")
+    save_file_f = "screenshots/" + time_ss + ".png"
+    pygame.image.save(screen, save_file_f)
+    print("Taken screenshot: " + save_file_f) 
 
 #BTNs
 start_button = button.Button(
@@ -959,14 +963,12 @@ while run:
                 pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
                 MENUSELECT.play()
             if event.key == pygame.K_F4:
-                webbrowser.open('https://github.com/jankupczyk')
+                webbrowser.open('https://github.com/jankupczyk/Zombioo#readme')
                 MENUSELECT.play()
             if event.key == pygame.K_F5:
-                screenshottaken = draw_text('Screenshot taken!', font, WHITE, 0, 840,)
-                MENUSELECT.play()
+                takescreenshot(screen)
+                MENUSELECT.play() 
                 SCREENSHOT.play()
-                screenshot(screen, "screenshots/screenshot.png", (20, 100), (1080, 864))
-                print("Screenshot taken")
 
         # KEYBOARDS SETT2
         if event.type == pygame.KEYUP:
@@ -987,3 +989,5 @@ while run:
     pygame.display.update()
 
 pygame.quit()
+
+# AUTHOR: Jan Kupczyk
