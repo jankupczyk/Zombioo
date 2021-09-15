@@ -55,6 +55,7 @@ or use auto py to exe
 CURRENT VERSION: <b>V1.3</b>
 
 LINCENSE
+
 MIT. See ```LICENSE``` for more informations
 
 <br />
