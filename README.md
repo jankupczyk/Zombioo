@@ -49,6 +49,12 @@ To create .exe file type in terminal:
 
 CURRENT VERSION: <b>V1.0</b>
 
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /> 
 
 *Be aware that Zombioo™ is my school project!*
+*This Isn't a full plan game*
