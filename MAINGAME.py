@@ -152,6 +152,7 @@ GAMEOVER.set_volume(5)
 
 # FONT
 font = pygame.font.Font("font/Futurot.ttf", 21)
+ver = pygame.font.Font("font/Futurot.ttf", 10)
 zombiootitle = pygame.font.Font("font/Futurot.ttf", 90)
 BTNtext = pygame.font.Font("font/Futurot.ttf", 50)
 YOUDIED = pygame.font.Font("font/Futurot.ttf", 110)
@@ -539,7 +540,8 @@ class HealthBar():
         screen.blit(update_fps(), (1050,5))
         draw_text('FPS', font, WHITE, 1000, 5)
         screen.blit(update_ms(), (70, 830))
-        draw_text('TIME', font, WHITE, 5, 830)
+        draw_text('TIME', font, WHITE, 5, 825)
+        draw_text('Current build version V1.3 (release.15.09.2021)', ver, WHITE, 5, 853)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
