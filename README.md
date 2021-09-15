@@ -6,6 +6,7 @@ Includes:
 ### HOW TO PLAY?
 ### SYSTEM REQUIREMENTS
 ### SUPPORTED VERSIONS
+### LICENSE
 ---
 
 ![Zombioo](demo/demoNEW.gif)
@@ -54,7 +55,10 @@ or use auto py to exe
 
 CURRENT VERSION: <b>V1.3</b>
 
-LINCENSE
+<br />
+<br />
+<br />
+### LINCENSE
 
 MIT. See ```LICENSE``` for more informations
 
