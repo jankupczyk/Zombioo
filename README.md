@@ -57,4 +57,5 @@ CURRENT VERSION: <b>V1.0</b>
 <br /> 
 
 *Be aware that Zombioo™ is my school project!*
-*This Isn't a full plan game*
+
+*This Isn't a full plan game, does not guarantee that the game will be supported in the future*
