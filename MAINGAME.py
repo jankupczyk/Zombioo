@@ -823,9 +823,10 @@ while run:
         screen.blit(F4key, (5, 690))
         draw_text('TAKE SCREENSHOT', font, WHITE, 55, 746)
         screen.blit(F5key, (5, 730))
-        draw_text('EXIT', font, WHITE, 55, 825)
-        screen.blit(ESCkey, (5, 810))
+        draw_text('EXIT', font, WHITE, 55, 810)
+        screen.blit(ESCkey, (5, 795))
         draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
+        draw_text('Current build version V1.3 (release.15.09.2021)', ver, WHITE, 5, 853)
         # BTNS MENU
         if start_button.draw(screen):
             start_game = True
