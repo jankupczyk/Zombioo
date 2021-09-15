@@ -20,7 +20,7 @@ To create .exe file type in terminal:
 
 or use auto py to exe
 
-```[PuPI](https://pypi.org/project/auto-py-to-exe/)```
+[PuPI](https://pypi.org/project/auto-py-to-exe/)
 <br />
 <br /> 
 <br />
