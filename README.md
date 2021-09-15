@@ -43,7 +43,7 @@ To create .exe file type in terminal:
 | V0.8    | :x:                | *Bug fixes* + *Screenshot function added*  | 15/04/2021 |
 | V0.2a2w | :x:                | *Hotfix*                                   | 10/04/2021 |
 | V0.2a1w | :x:                | *Hotfix*                                   | 10/04/2021 |
-| V0.2    | :x:                | *Archival version*                         | *--------* |
+| V0.2    | :x:                | *Archival version*                         | *----------* |
 | V0.1    | :x:                | *Release of Zombioo*                       | 19/03/2021 |
 | V0.01   | :x:                | *Pre-release of Zombioo*                   | 06/03/2021 |
 
