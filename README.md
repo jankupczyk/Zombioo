@@ -51,6 +51,7 @@ or use auto py to exe
 ### SUPPORTED VERSIONS
 | Version | Supported          | Added                                                                        | Date       |
 | ------- | ------------------ | ---------------------------------------------------------------------------- | ---------- |
+| V1.31   | :white_check_mark: | *Bug fixes* + *Added full-screen functionality*                              | 19/09/2021 |
 | V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse*   | 15/09/2021 |
 | V1.0    | :white_check_mark: | *Bug fixes* + *Molotov added*                                                | 22/05/2021 |
 | V0.8    | :x:                | *Bug fixes* + *Screenshot function added*                                    | 15/04/2021 |
