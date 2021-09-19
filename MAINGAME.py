@@ -9,6 +9,8 @@ import time
 
 pygame.init()
 
+FULL_SCREEN_WIDTH = 1080
+FULL_SCREEN_HEIGHT = 1920
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 programIcon = pygame.image.load('img/favicon.png')
@@ -507,12 +509,12 @@ class ItemBox(pygame.sprite.Sprite):
         self.rect.x += screen_scroll
         if pygame.sprite.collide_rect(self, player):
             if self.item_type == 'Health':
-                player.health += 25
+                player.health += 20
                 PICKHEALTH.play()
                 if player.health > player.max_health:
                     player.health = player.max_health
             elif self.item_type == 'Ammo':
-                player.ammo += 5
+                player.ammo += 3
                 RELOAD.play()
             elif self.item_type == 'Grenade':
                 player.grenades += 1
@@ -541,7 +543,7 @@ class HealthBar():
         draw_text('FPS', font, WHITE, 1000, 5)
         screen.blit(update_ms(), (70, 830))
         draw_text('TIME', font, WHITE, 5, 825)
-        draw_text('Current build version V1.3 (release.15.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build version V1.31 (release.19.09.2021)', ver, WHITE, 5, 853)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -826,7 +828,7 @@ while run:
         draw_text('EXIT', font, WHITE, 55, 810)
         screen.blit(ESCkey, (5, 795))
         draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
-        draw_text('Current build version V1.3 (release.15.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build version V1.31 (release.19.09.2021)', ver, WHITE, 5, 853)
         # BTNS MENU
         if start_button.draw(screen):
             start_game = True
@@ -963,6 +965,8 @@ while run:
                 pygame.mixer.music.unpause()
                 MENUSELECT.play()
             if event.key == pygame.K_f:
+                SCREEN_WIDTH = 1080
+                SCREEN_HEIGHT = 1920
                 pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
                 MENUSELECT.play()
             if event.key == pygame.K_F4:
