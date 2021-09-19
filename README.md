@@ -36,7 +36,7 @@ or use auto py to exe
 
 | System     | Requirements                                                       |
 |:----------:|:------------------------------------------------------------------:|
-| OS         | Windows 98 / ME / 2000 / XP / Vista / 7 / 8 / 8.1 / 10 / 11        |
+| OS         | ME / 2000 / XP / Vista / 7 / 8 / 8.1 / 10 / 11                     |
 | CPU        | 2,4GHz Pentium 4 / Pentium II 300  / Athlon                        |
 | GPU        | 128 Мб Video card GeForce 4 / Radeon 9600                          |
 | MEMORY     | 512MB RAM                                                          |
