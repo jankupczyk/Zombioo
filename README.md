@@ -62,7 +62,7 @@ or use auto py to exe
 | V0.1    | :x:                | *Release of Zombioo*                                                                       | 19/03/2021 |
 | V0.01   | :x:                | *Pre-release of Zombioo*                                                                   | 06/03/2021 |
 
-CURRENT VERSION: <b>V1.3</b>
+CURRENT VERSION: <b>V1.32</b>
 
 <br />
 <br />
