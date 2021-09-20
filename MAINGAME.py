@@ -543,7 +543,7 @@ class HealthBar():
         draw_text('FPS', font, WHITE, 1000, 5)
         screen.blit(update_ms(), (70, 820))
         draw_text('TIME', font, WHITE, 5, 820)
-        draw_text('Current build version V1.31 (release.19.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build version V1.32 (release.20.09.2021)', ver, WHITE, 5, 853)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -828,7 +828,7 @@ while run:
         draw_text('EXIT', font, WHITE, 55, 810)
         screen.blit(ESCkey, (5, 795))
         draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
-        draw_text('Current build version V1.31 (release.19.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build version V1.32 (release.20.09.2021)', ver, WHITE, 5, 853)
         # BTNS MENU
         if start_button.draw(screen):
             start_game = True
