@@ -541,8 +541,8 @@ class HealthBar():
         screen.blit(headhp, (-4, 2))
         screen.blit(update_fps(), (1050,5))
         draw_text('FPS', font, WHITE, 1000, 5)
-        screen.blit(update_ms(), (70, 830))
-        draw_text('TIME', font, WHITE, 5, 825)
+        screen.blit(update_ms(), (70, 820))
+        draw_text('TIME', font, WHITE, 5, 820)
         draw_text('Current build version V1.31 (release.19.09.2021)', ver, WHITE, 5, 853)
 
 class Bullet(pygame.sprite.Sprite):
@@ -569,7 +569,7 @@ class Bullet(pygame.sprite.Sprite):
         for enemy in enemy_group:
             if pygame.sprite.spritecollide(enemy, bullet_group, False):
                 if enemy.alive:
-                    enemy.health -= random.randint(60,140)
+                    enemy.health -= random.randint(40,99)
                     ZOMBIEATTACK.play()
                     self.kill()
                     
@@ -667,7 +667,7 @@ class Molotov(pygame.sprite.Sprite):
                     self.vel_y = 0
                     dy = tile[1].top - self.rect.bottom
 
-        # MOLOTOV POS
+        # MOLOTOV r
         self.rect.x += dx + screen_scroll
         self.rect.y += dy
 
@@ -923,6 +923,7 @@ while run:
             screen_scroll = 0
             draw_text('YOU DIED!', YOUDIED, WHITE, 260, 150), GAMEOVER.stop()
             screen.blit(headdeadhp, (-4, 2))
+            
             if restart_button.draw(screen):
                 MENUSELECT.play()
                 bg_scroll = 0
