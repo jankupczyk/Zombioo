@@ -54,7 +54,7 @@ or use auto py to exe
 | V1.32   | :white_check_mark: | *Bug fixes* + *Hotfix* + *More tiles added*                                                | 20/09/2021 |
 | V1.31   | :white_check_mark: | *Bug fixes* + *Added fullscreen functionality*                                             | 19/09/2021 |
 | V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse* + *New level*   | 15/09/2021 |
-| V1.0    | :white_check_mark: | *Bug fixes* + *Molotov added*                                                              | 22/05/2021 |
+| V1.0    | :x:                | *Bug fixes* + *Molotov added*                                                              | 22/05/2021 |
 | V0.8    | :x:                | *Bug fixes* + *Screenshot function added*                                                  | 15/04/2021 |
 | V0.2a2w | :x:                | *Hotfix*                                                                                   | 10/04/2021 |
 | V0.2a1w | :x:                | *Hotfix*                                                                                   | 10/04/2021 |
