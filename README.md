@@ -79,6 +79,6 @@ MIT. See ```LICENSE``` for more informations
 <br />
 <br /> 
 
-*Be aware that Zombioo™ is my school project!*
+*Be aware that Zombioo™ is my school project*
 
-*This Isn't a full plan game, does not guarantee that the game will be supported in the future*
+*This Isn't a full plan game, does not guarantee that the game will be supported in the future!*
