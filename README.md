@@ -16,6 +16,7 @@ Includes:
 ### LICENSE
 ---
 
+
 ![Zombioo](demo/demoNEW.gif)
 <br />
 <br />
@@ -25,6 +26,7 @@ Run ```Zombioo.exe``` or simply open ```MAINGAME.py```
 
 To create .exe file type in terminal:     
 ```pyinstaller.exe --onefile .\MAINGAME.py```
+
 
 
 or use auto py to exe
