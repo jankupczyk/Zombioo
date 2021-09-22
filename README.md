@@ -58,8 +58,8 @@ or use auto py to exe
 | V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse* + *New level*         | 15/09/2021 | :x:                |
 | V1.0    | :x:                | *Bug fixes* + *Molotov added*                                                                    | 22/05/2021 | :white_check_mark: |
 | V0.8    | :x:                | *Bug fixes* + *Screenshot function added*                                                        | 15/04/2021 | :white_check_mark: |
-| V0.2a2w | :x:                | *Hotfix*                                                                                         | 10/04/2021 | :warning:          |
-| V0.2a1w | :x:                | *Hotfix*                                                                                         | 10/04/2021 | :warning:          |
+| V0.2a2w | :x:                | *Unstable version*                                                                               | 10/04/2021 | :warning:          |
+| V0.2a1w | :x:                | *Unstable version*                                                                               | 10/04/2021 | :warning:          |
 | V0.2    | :x:                | *Archival version*                                                                               |------------| :white_check_mark: |
 | V0.1    | :x:                | *Release of Zombioo*                                                                             | 19/03/2021 | :white_check_mark: |
 | V0.01   | :x:                | *Pre-release of Zombioo*                                                                         | 06/03/2021 | :x:                |
