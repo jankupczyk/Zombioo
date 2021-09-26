@@ -54,7 +54,7 @@ or use auto py to exe
 | Version | Supported {code}   | Added                                                                                                | Date       | Releases           |
 | ------- |:------------------:| ---------------------------------------------------------------------------------------------------- |:----------:|:------------------:|
 | V2.0    | SOON               | *Settings option* + *Fullscreen fixes* + *Health rework* + *FPS fixes* + *New weapon* + *Added fullscreen functionality*   | 01/11/2021 | SOON               |
-| V1.32   | :white_check_mark: | *Hotfix* + *More tiles added*                                                          | 20/09/2021 | :white_check_mark: |
+| V1.32   | :white_check_mark: | *More tiles added*                                                                                   | 20/09/2021 | :white_check_mark: |
 | V1.31   | :white_check_mark: | *Bug fixes* + *Added fullscreen functionality*                                                       | 19/09/2021 | :white_check_mark: |
 | V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse* + *New level*             | 15/09/2021 | :x:                |
 | V1.0    | :x:                | *Bug fixes* + *Molotov added*                                                                        | 22/05/2021 | :white_check_mark: |
