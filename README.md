@@ -40,7 +40,7 @@ or use auto py to exe
 |:----------:|:------------------------------------------------------------------:|
 | OS         | ME / 2000 / XP / Vista / 7 / 8 / 8.1 / 10 / 11                     |
 | CPU        | 2,4GHz Pentium 4 / Pentium II 300  / Athlon                        |
-| GPU        | 128 Мб Video card GeForce 4 / Radeon 9600                          |
+| GPU        | 128 МB Video card GeForce 4 / Radeon 9600                          |
 | MEMORY     | 512MB RAM                                                          |
 | FREE SPACE | 460MB                                                              |
 | DirectX    | DirectX 9.0 / DirectX 10.0 / DirectX 11.0 / DirectX 12.0           |
