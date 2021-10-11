@@ -6,6 +6,7 @@ import button
 import pyautogui
 import webbrowser
 import time
+import itertools
 
 pygame.init()
 
@@ -13,15 +14,17 @@ FULL_SCREEN_WIDTH = 1080
 FULL_SCREEN_HEIGHT = 1920
 SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
-programIcon = pygame.image.load('img/favicon.png')
+programIcon = pygame.image.load('img/favicon/favicon-main.png')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_icon(programIcon)
-pygame.display.set_caption('Zombioo')
+pygame.display.set_caption('ombioo')
 pygame.mouse.set_visible(1)
 
 # FPS
 clock = pygame.time.Clock()
 FPS = 85
+PING = [4, 5]
+
 
 # VAR
 GRAVITY = 0.50
@@ -47,12 +50,27 @@ molotov = False
 molotov_thrown = False
 
 
+# HALLOWEEN UPDATE IMAGES
+cat_halloween = pygame.image.load('img/Halloween_update/cat_halloween_update.png').convert_alpha()
+pumpkin_halloween = pygame.image.load('img/Halloween_update/pumpkin_halloween_update.png').convert_alpha()
+bat_halloween = pygame.image.load('img/Halloween_update/halloween_halloween_update.png').convert_alpha()
+menu_halloween = pygame.image.load('img/Halloween_update/menuzombioo_halloween_update.png').convert_alpha()
+happy_halloween = pygame.image.load('img/Halloween_update/happy_halloween_update.png').convert_alpha()
+border_halloween1 = pygame.image.load('img/Halloween_update/border_lore_halloween1.png').convert_alpha()
+border_halloween2 = pygame.image.load('img/Halloween_update/border_lore_halloween2.png').convert_alpha()
+
 
 # IMAGES
 start_img = pygame.image.load('img/btn/start_btn.png').convert_alpha()
 exit_img = pygame.image.load('img/btn/exit_btn.png').convert_alpha()
 restart_img = pygame.image.load('img/btn/restart_btn.png').convert_alpha()
+settings_img = pygame.image.load('img/btn/cog.png').convert_alpha()
+jk_img = pygame.image.load('img/btn/jk.png').convert_alpha()
 menubg = pygame.image.load('img/background/menuzombioo.png').convert_alpha()
+speaker_img = pygame.image.load('img/btn/speaker.png').convert_alpha()
+speaker_muted_img = pygame.image.load('img/btn/speaker_muted.png').convert_alpha()
+info_img = pygame.image.load('img/btn/info_button.png').convert_alpha()
+angel_statue = pygame.image.load('img/tile/20.png').convert_alpha()
 
 #KEYBOARD
 Wkey = pygame.image.load('img/icons/keyboard/Keyboard & Mouse/Light/W_Key_Light.png').convert_alpha()
@@ -76,6 +94,11 @@ mountain_img = pygame.image.load('img/background/2_background_NEST/2_game_backgr
 sky_img = pygame.image.load('img/Background/sky_cloud.png').convert_alpha()
 headhp = pygame.image.load('img/player/headHP.png').convert_alpha()
 headdeadhp = pygame.image.load('img/player/headdeadHP.png').convert_alpha()
+border_settings_img = pygame.image.load('img/background/border_settings.png').convert_alpha()
+border_lore_img = pygame.image.load('img/background/border_lore.png').convert_alpha()
+
+
+
 # TILES ETC
 img_list = []
 for x in range(TILE_TYPES):
@@ -106,6 +129,7 @@ RED = (176, 8, 12)
 WHITE = (255, 255, 255)
 GREEN = (26, 110, 15)
 BLACK = (0, 0, 0)
+CRIMSON = (191, 46, 72)
 
 #MUSIC
 menumusic = pygame.mixer.music.load('audio/THEME.wav')
@@ -150,15 +174,17 @@ GAMEOVER = pygame.mixer.Sound('audio/gameover.wav')
 GAMEOVER.set_volume(2)
 
 SCREENSHOT = pygame.mixer.Sound('audio/takingphoto.wav')
-GAMEOVER.set_volume(5)
+SCREENSHOT.set_volume(5)
 
 # FONT
 font = pygame.font.Font("font/Futurot.ttf", 21)
 ver = pygame.font.Font("font/Futurot.ttf", 10)
-zombiootitle = pygame.font.Font("font/Futurot.ttf", 90)
+zombiootitle = pygame.font.Font("font/Futurot.ttf", 130)
 BTNtext = pygame.font.Font("font/Futurot.ttf", 50)
 YOUDIED = pygame.font.Font("font/Futurot.ttf", 110)
 JanKupczyk = pygame.font.Font("font/Futurot.ttf", 13)
+LORE = pygame.font.Font("font/Futurot.ttf", 14)
+LOREsmall = pygame.font.Font("font/Futurot.ttf", 8)
 
 pausetimerevent = pygame.USEREVENT + 1
 paused = False
@@ -215,7 +241,7 @@ class Soldier(pygame.sprite.Sprite):
         self.shoot_cooldown = 0
         self.grenades = grenades
         self.molotovs = molotovs
-        self.health = 140
+        self.health = 130
         self.max_health = self.health
         self.direction = 1
         self.vel_y = 0
@@ -541,14 +567,16 @@ class HealthBar():
         screen.blit(headhp, (-4, 2))
         screen.blit(update_fps(), (1050,5))
         draw_text('FPS', font, WHITE, 1000, 5)
+        screen.blit(update_ping(), (1065,30))
+        draw_text('MS', font, WHITE, 1005, 30)
         screen.blit(update_ms(), (70, 820))
         draw_text('TIME', font, WHITE, 5, 820)
-        draw_text('Current build version V1.32 (release.20.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build V2.0 (release.01.11.2021)', ver, WHITE, 5, 853)
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
-        self.speed = 12
+        self.speed = 13
         self.image = bullet_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -582,6 +610,70 @@ def update_ms():
     mss = str(pygame.time.get_ticks()/1000)
     mss_text = font.render(mss, 1, pygame.Color("white"))
     return mss_text
+
+def update_ping():
+    ping = str(int(random.choice(PING)))
+    ping_text = font.render(ping, 1, pygame.Color("white"))
+    return ping_text
+
+def settings_show():
+        draw_text('CONTROL:', font, WHITE, 73, 385),
+        draw_text('JUMP', font, WHITE, 145, 415),
+        screen.blit(Wkey, (100, 400)),
+        draw_text('LEFT', font, WHITE, 20, 450),
+        screen.blit(Dkey, (135, 435)),
+        draw_text('RIGHT', font, WHITE, 183, 450),
+        screen.blit(Akey, (65, 435)),
+        draw_text('SHOOT', font, WHITE, 170, 490),
+        screen.blit(SPkey, (85, 460)),
+        draw_text('NADE', font, WHITE, 55, 546),
+        screen.blit(Qkey, (5, 530)),
+        draw_text('MUTE MUSIC', font, WHITE, 55, 586),
+        screen.blit(Mkey, (5, 570)),
+        draw_text('UNMUTE MUSIC', font, WHITE, 55, 626),
+        screen.blit(Ukey, (5, 610)),
+        draw_text('FULLSCREEN', font, WHITE, 55, 666),
+        screen.blit(Fkey, (5, 650)),
+        draw_text('TAKE SCREENSHOT', font, WHITE, 55, 706),
+        screen.blit(F5key, (5, 690)),
+        draw_text('EXIT', font, WHITE, 55, 746),
+        screen.blit(ESCkey, (5, 730))
+        screen.blit(border_settings_img, (-139, 349))
+        # screen.blit(border_halloween2, (-139, 349)) #halloween_update
+
+def speaker_show():
+    pygame.mixer.music.pause()
+    SHOOT_SOUND.set_volume(0)
+    RELOAD.set_volume(0)
+    GRENADESOUND.set_volume(0)
+    MOLOTOVSOUND.set_volume(0)
+    MOLOTOVBR.set_volume(0)
+    PICK.set_volume(0)
+    PICKHEALTH.set_volume(0)
+    GRUNTING.set_volume(0)
+    ZOMBIEATTACK.set_volume(0)
+    MENUSELECT.set_volume(0)
+    NEXTLEVEL.set_volume(0)
+    JUMP.set_volume(0)
+    GAMEOVER.set_volume(0)
+    SCREENSHOT.set_volume(0)
+    screen.blit(speaker_muted_img, (70, 795))
+
+def info_show():
+        screen.blit(border_lore_img, (646, 200))
+        # screen.blit(border_halloween1, (646, 200)) #halloween_update
+        draw_text('In ZOMBIOO you have to survive the zombie', LORE, WHITE, 680, 350)
+        draw_text('apocalypse, use everything you can find', LORE, WHITE, 680, 370)
+        draw_text('from grenades, molotovs, and various', LORE, WHITE, 680, 390)
+        draw_text(' ammunition to kill zombies and heal', LORE, WHITE, 680, 410)
+        draw_text('  yourself with a first aid kit', LORE, WHITE, 680, 430)
+        draw_text('', LORE, WHITE, 680, 450)
+        draw_text('', LORE, WHITE, 680, 470)
+        screen.blit(angel_statue, (985, 480))
+        draw_text('On each level, you must', LORE, WHITE, 680, 490)
+        draw_text('collect special statues', LORE, WHITE, 680, 510)
+        draw_text(' to finish it', LORE, WHITE, 680, 530)
+        draw_text('ANGEL STATUE', LOREsmall, WHITE, 975, 575)
 
 class Grenade(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -699,7 +791,8 @@ class MoloExplosion(pygame.sprite.Sprite):
                 f'img/moloexplosion/Molo_{num}.png').convert_alpha()
             img = pygame.transform.scale(
                 img, (int(img.get_width() * scale), int(img.get_height() * scale)))
-            self.images.append(img), MOLOTOVSOUND.play()
+            self.images.append(img)
+        MOLOTOVSOUND.play()
         self.frame_index = 0
         self.image = self.images[self.frame_index]
         self.rect = self.image.get_rect()
@@ -729,7 +822,8 @@ class Explosion(pygame.sprite.Sprite):
                 f'img/explosion/Explosion_{num}.png').convert_alpha()
             img = pygame.transform.scale(
                 img, (int(img.get_width() * scale), int(img.get_height() * scale)))
-            self.images.append(img), GRENADESOUND.play()
+            self.images.append(img)
+        GRENADESOUND.play()
         self.frame_index = 0
         self.image = self.images[self.frame_index]
         self.rect = self.image.get_rect()
@@ -761,11 +855,18 @@ def takescreenshot(screen):
 
 #BTNs
 start_button = button.Button(
-    SCREEN_WIDTH // 2 - 130, SCREEN_HEIGHT // 2 - 150, start_img, 1)
-exit_button = button.Button(SCREEN_WIDTH // 2 - 110,
-                            SCREEN_HEIGHT // 2 + 50, exit_img, 1)
+    SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT // 2 - 90, start_img, 1)
+exit_button = button.Button(SCREEN_WIDTH // 2 - 64,
+                            SCREEN_HEIGHT // 2 + 50, exit_img, 1) 
+exit_button_die = button.Button(SCREEN_WIDTH // 2 - 65,
+                            SCREEN_HEIGHT // 2 + 55, exit_img, 1)
 restart_button = button.Button(
-    SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 50, restart_img, 2)
+    SCREEN_WIDTH // 2 - 120, SCREEN_HEIGHT // 2 - 50, restart_img, 2)
+settings_button = button.Button(SCREEN_WIDTH // 1 - 1050, SCREEN_HEIGHT // 1 - 70, settings_img, 1)
+speaker = button.Button(SCREEN_WIDTH // 1 - 1010, SCREEN_HEIGHT // 1 - 70, speaker_img, 1)
+speaker_muted = button.Button(SCREEN_WIDTH // 1 - 1010, SCREEN_HEIGHT // 1 - 70, speaker_muted_img, 1)
+info_button = button.Button(SCREEN_WIDTH // 1 - 975, SCREEN_HEIGHT // 1 - 72, info_img, 1)
+jk_button = button.Button(SCREEN_WIDTH // 1 - 180, SCREEN_HEIGHT // 1 - 20, jk_img, 1)
 
 # SPRITES
 enemy_group = pygame.sprite.Group()
@@ -786,7 +887,7 @@ for row in range(ROWS):
     r = [-1] * COLS
     world_data.append(r)
 # load in level data and create world
-with open(f'level{level}_data.csv', newline='') as csvfile:
+with open(f'level/level{level}_data.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
@@ -794,7 +895,8 @@ with open(f'level{level}_data.csv', newline='') as csvfile:
 world = World()
 player, health_bar = world.process_data(world_data)
 
-
+game_state = "start_menu"
+speaker_sp = "speaker"
 run = True
 while run:
 
@@ -802,33 +904,15 @@ while run:
 
     if start_game == False:
         # MENU
-        screen.blit(menubg, (0, 0))
-        draw_text('ZOMBIOO', zombiootitle, WHITE, 308, 150)
-        draw_text('CONTROL:', font, WHITE, 115, 380)
-        draw_text('JUMP', font, WHITE, 190, 410)
-        screen.blit(Wkey, (140, 395))
-        draw_text('LEFT', font, WHITE, 55, 450)
-        screen.blit(Dkey, (180, 435))
-        draw_text('RIGHT', font, WHITE, 230, 450)
-        screen.blit(Akey, (100, 435))
-        draw_text('SHOOT', font, WHITE, 210, 490)
-        screen.blit(SPkey, (125, 460))
-        draw_text('NADE', font, WHITE, 55, 546)
-        screen.blit(Qkey, (5, 530))
-        draw_text('MUTE MUSIC', font, WHITE, 55, 586)
-        screen.blit(Mkey, (5, 570))
-        draw_text('UNMUTE MUSIC', font, WHITE, 55, 626)
-        screen.blit(Ukey, (5, 610))
-        draw_text('FULLSCREEN', font, WHITE, 55, 666)
-        screen.blit(Fkey, (5, 650))
-        draw_text('VISIT WEBSITE', font, WHITE, 55, 706)
-        screen.blit(F4key, (5, 690))
-        draw_text('TAKE SCREENSHOT', font, WHITE, 55, 746)
-        screen.blit(F5key, (5, 730))
-        draw_text('EXIT', font, WHITE, 55, 810)
-        screen.blit(ESCkey, (5, 795))
+        screen.blit(menubg, (0, 0)) #screen.blit(menu_halloween, (0, 0)) #halloween_update
+        draw_text('ZOMBIOO', zombiootitle, WHITE, 180, 125)
         draw_text('©2021 Jan Kupczyk', JanKupczyk, WHITE, 905, 845)
-        draw_text('Current build version V1.32 (release.20.09.2021)', ver, WHITE, 5, 853)
+        draw_text('Current build V2.0 (released.01.11.2021)', ver, WHITE, 5, 845)
+        # screen.blit(happy_halloween, (385, 80))   #halloween_update
+        # screen.blit(cat_halloween, (783, 605))    #halloween_update
+        # screen.blit(pumpkin_halloween, (175, -49))    #halloween_update
+        # screen.blit(pumpkin_halloween, (550, -49))    #halloween_update
+        # screen.blit(pumpkin_halloween, (668, -49))   #halloween_update
         # BTNS MENU
         if start_button.draw(screen):
             start_game = True
@@ -837,6 +921,26 @@ while run:
         if exit_button.draw(screen):
             MENUSELECT.play()
             run = False
+            pygame.display.update()
+        if settings_button.draw(screen):
+            MENUSELECT.play()
+            game_state = "settings"
+        elif game_state == "settings":
+                settings_show()
+                info_show()
+        if jk_button.draw(screen):
+            MENUSELECT.play()
+            webbrowser.open('https://github.com/jankupczyk')
+        if speaker.draw(screen):
+            MENUSELECT.play()
+            speaker_sp = "speaker_menu"
+        elif speaker_sp == "speaker_menu":
+            MENUSELECT.play()
+            speaker_show()
+        if info_button.draw(screen):
+            MENUSELECT.play()
+            webbrowser.open('https://github.com/jankupczyk/Zombioo/stargazers')
+            webbrowser.open('https://jankupczyk.github.io/Zombioo/')
     else:
         draw_bg()
         world.draw()
@@ -851,7 +955,7 @@ while run:
         draw_text('MOLOTOVS: ', font, WHITE, 10, 85)
         for x in range(player.molotovs):
             screen.blit(molotov_img, (140 + (x * 15), 75))
-
+        
         player.update()
         player.draw()
 
@@ -862,7 +966,7 @@ while run:
 
         zombiebullet_group.update()
         bullet_group.update()
-        grenade_group.update()
+        grenade_group.update() 
         explosion_group.update()
         moloexplosion_group.update()
         molotov_group.update()
@@ -912,7 +1016,7 @@ while run:
                 world_data = reset_level()
                 if level <= MAX_LEVELS:
                     # CREATING WORLD
-                    with open(f'level{level}_data.csv', newline='') as csvfile:
+                    with open(f'level/level{level}_data.csv', newline='') as csvfile:
                         reader = csv.reader(csvfile, delimiter=',')
                         for x, row in enumerate(reader):
                             for y, tile in enumerate(row):
@@ -923,13 +1027,15 @@ while run:
             screen_scroll = 0
             draw_text('YOU DIED!', YOUDIED, WHITE, 260, 150), GAMEOVER.stop()
             screen.blit(headdeadhp, (-4, 2))
-            
+            if exit_button_die.draw(screen):
+                MENUSELECT.play()
+                run = False
             if restart_button.draw(screen):
                 MENUSELECT.play()
                 bg_scroll = 0
                 world_data = reset_level()
                 #CREATE WORLD DATA
-                with open(f'level{level}_data.csv', newline='') as csvfile:
+                with open(f'level/level{level}_data.csv', newline='') as csvfile:
                     reader = csv.reader(csvfile, delimiter=',')
                     for x, row in enumerate(reader):
                         for y, tile in enumerate(row):
@@ -969,9 +1075,6 @@ while run:
                 SCREEN_WIDTH = 1080
                 SCREEN_HEIGHT = 1920
                 pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
-                MENUSELECT.play()
-            if event.key == pygame.K_F4:
-                webbrowser.open('https://github.com/jankupczyk/Zombioo#readme')
                 MENUSELECT.play()
             if event.key == pygame.K_F5:
                 takescreenshot(screen)
