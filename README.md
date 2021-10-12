@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/github/stars/jankupczyk/Zombioo?color=success&style=for-the-badge" alt="jankupczyk" />
   <img src="https://img.shields.io/github/forks/jankupczyk/Zombioo?color=success&style=for-the-badge" alt="jankupczyk" />
   <img src="https://img.shields.io/github/license/jankupczyk/Zombioo?color=important&style=for-the-badge" alt="jankupczyk" />
+  <img src="https://img.shields.io/github/downloads/jankupczyk/Zombioo/total?color=green&style=for-the-badge" alt="jankupczyk" />
 </p>
 
 ---
