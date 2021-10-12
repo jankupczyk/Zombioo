@@ -53,7 +53,7 @@ or use auto py to exe
 ### SUPPORTED VERSIONS
 | Version | Supported {code}   | Added                                                                                                | Date       | Releases           |
 |:-------:|:------------------:| ---------------------------------------------------------------------------------------------------- |:----------:|:------------------:|
-| V2.0    | SOON               | *Settings option* + *Fullscreen functionality* + *Textures rework* + *Health rework* + *FPS/MS fixes* + *Bug fixes* | 30/10/2021 | SOON    |
+| V2.0    | :white_check_mark:              | *Settings option* + *Fullscreen functionality* + *Textures rework* + *Health rework* + *FPS/MS fixes* + *Bug fixes* | 30/10/2021 | :white_check_mark:    |
 | V1.32   | :white_check_mark: | *More tiles added*                                                                                   | 20/09/2021 | :white_check_mark: |
 | V1.31   | :white_check_mark: | *Bug fixes* + *Added fullscreen functionality*                                                       | 19/09/2021 | :white_check_mark: |
 | V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse* + *New level*             | 15/09/2021 | :x:                |
