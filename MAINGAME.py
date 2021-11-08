@@ -857,7 +857,7 @@ def takescreenshot(screen):
 start_button = button.Button(
     SCREEN_WIDTH // 2 - 75, SCREEN_HEIGHT // 2 - 90, start_img, 1)
 exit_button = button.Button(SCREEN_WIDTH // 2 - 64,
-                            SCREEN_HEIGHT // 2 + 50, exit_img, 1) 
+                            SCREEN_HEIGHT // 2 + 50, exit_img, 1)
 exit_button_die = button.Button(SCREEN_WIDTH // 2 - 65,
                             SCREEN_HEIGHT // 2 + 55, exit_img, 1)
 restart_button = button.Button(
@@ -1101,4 +1101,12 @@ while run:
 
 pygame.quit()
 
+
+
 # AUTHOR: Jan Kupczyk
+# GITHUB: https://github.com/jankupczyk
+# LICENSE: MIT
+
+# FINALLY: 
+# Be aware that Zombioo™ is my school project
+# This Isn't a full plan game, does not guarantee that the game will be supported in the future!
