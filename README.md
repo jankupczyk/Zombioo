@@ -51,21 +51,6 @@ or use auto py to exe
 <br />
 <br />
 
-### SUPPORTED VERSIONS
-| Version | Supported {code}   | Added                                                                                                | Date       | Releases           |
-|:-------:|:------------------:| ---------------------------------------------------------------------------------------------------- |:----------:|:------------------:|
-| V2.0    | :white_check_mark:              | *Settings option* + *Fullscreen functionality* + *Textures rework* + *Health rework* + *FPS/MS fixes* + *Bug fixes* | 30/10/2021 | :white_check_mark:    |
-| V1.32   | :white_check_mark: | *More tiles added*                                                                                   | 20/09/2021 | :white_check_mark: |
-| V1.31   | :white_check_mark: | *Bug fixes* + *Added fullscreen functionality*                                                       | 19/09/2021 | :white_check_mark: |
-| V1.3    | :white_check_mark: | *Bug fixes* + *Screenshot adjustment* + *Timer added* + *Damage rebalanse* + *New level*             | 15/09/2021 | :x:                |
-| V1.0    | :x:                | *Bug fixes* + *Molotov added*                                                                        | 22/05/2021 | :white_check_mark: |
-| V0.8    | :x:                | *Bug fixes* + *Screenshot function added*                                                            | 15/04/2021 | :white_check_mark: |
-| V0.2a2w | :x:                | *HOTFIX - Unstable version*                                                                          | 10/04/2021 | :warning:          |
-| V0.2a1w | :x:                | *HOTFIX - Unstable version*                                                                          | 10/04/2021 | :warning:          |
-| V0.2    | :x:                | *Archival version*                                                                                   |------------| :white_check_mark: |
-| V0.1    | :x:                | *Release of Zombioo*                                                                                 | 19/03/2021 | :white_check_mark: |
-| V0.01   | :x:                | *Pre-release of Zombioo*                                                                             | 06/03/2021 | :x:                |
-
 CURRENT VERSION: <b>V1.32</b>
 
 <br />
